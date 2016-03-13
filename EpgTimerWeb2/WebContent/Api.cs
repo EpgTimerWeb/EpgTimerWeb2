@@ -663,6 +663,11 @@ namespace EpgTimer
                             var Target = CommonManager.Instance.DB.EpgAutoAddList[Id];
                             var Preset = GetPreset(Arg, Target.Setting);
                             var Search = GetEpgSKey(Arg, Target.Search);
+                            if (ContainsMultipleKeys(Arg, "overlap", "overlap_day"))
+                            {
+                                Search.ChkRecDay = ushort.Parse(Arg["overlap_day"]);
+                                Search.ChkRecEnd = 1;
+                            }
                             ErrCode err = (ErrCode)CommonManager.Instance.CtrlCmd.SendChgEpgAutoAdd(new List<EpgAutoAddData>{
                                 new EpgAutoAddData(){
                                     Search = Search,
