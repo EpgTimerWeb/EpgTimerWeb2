@@ -35,7 +35,7 @@ namespace EpgTimer
                 {"Server", "EpgTimerWeb2/1.0"},
                 {"Date", DateTime.Now.ToString("R")},
                 {"Content-Language", "ja"},
-                {"Connection", "close"}
+                //{"Connection", "close"}
             };
             context = c;
             UseGZip = false;
@@ -132,6 +132,10 @@ EpgTimerWeb(v2) by YUKI
             else if (!Context.Response.Headers.ContainsKey("Content-Length"))
             {
                 Context.Response.Headers["Content-Length"] = Context.Response.OutputStream.Length.ToString();
+            }
+            if (!Context.Response.Headers.ContainsKey("Connection"))
+            {
+                Context.Response.Headers["Connection"] = "close";
             }
             SendResponseCode(Context);
             SendResponseHeader(Context, Context.Response.Headers);
