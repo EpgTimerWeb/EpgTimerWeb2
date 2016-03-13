@@ -120,7 +120,6 @@
     <Compile Include="WebContent\HttpSession.cs" />
     <Compile Include="WebContent\Api.cs" />
     <Compile Include="WebContent\JsonResult.cs" />
-    <Compile Include="WebContent\SettingPage.cs" />
     <Compile Include="WebContent\Setup.cs" />
     <Compile Include="WebContent\WebCache.cs" />
     <Compile Include="WebServer\Common.cs" />

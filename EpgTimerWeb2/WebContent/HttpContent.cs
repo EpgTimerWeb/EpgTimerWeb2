@@ -39,7 +39,7 @@ namespace EpgTimer
                 if (!Mime.IsImage(PartName))
                     MimeType += ";charset=UTF-8";
                 Context.Response.Headers["Content-Type"] = MimeType;
-                HttpContext.SendFile(Context, ".\\web\\" + PartName);
+                HttpContext.SendFile(Context, ".\\web\\" + PartName, !PartName.Contains("index.htm"));
                 Ret = true;
             }
             else

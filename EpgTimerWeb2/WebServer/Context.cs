@@ -52,9 +52,10 @@ namespace EpgTimer
             LockObject = new object();
             Request = HttpRequest.Parse(this.HttpStream);
             IpAddress = ((IPEndPoint)Client.Client.RemoteEndPoint).Address.ToString();
-            if(Request.Headers.ContainsKey("Accept-Encoding")
-                && Request.Headers["Accept-Encoding"].IndexOf("gzip") >= 0){
-                    Response.UseGZip = true;
+            if (Request.Headers.ContainsKey("Accept-Encoding")
+                && Request.Headers["Accept-Encoding"].IndexOf("gzip") >= 0)
+            {
+                Response.UseGZip = true;
             }
         }
         public HttpRequest Request { set; get; }
@@ -74,7 +75,7 @@ namespace EpgTimer
                 HttpStream = _Client.GetStream();
             }
         }
-        public Stream HttpStream {set;get;}
+        public Stream HttpStream { set; get; }
 
         public void Close()
         {
@@ -93,20 +94,23 @@ namespace EpgTimer
         {
             SendResponse(Context, Encoding.UTF8.GetBytes(Str));
         }
-        public static void SendFile(HttpContext Context, string Path)
+        public static void SendFile(HttpContext Context, string Path, bool Check = true)
         {
-            DateTime LastModified = File.GetLastWriteTimeUtc(Path);
-            if (Context.Request.Headers.ContainsKey("If-Modified-Since"))
+            if (Check)
             {
-                if (Context.Request.Headers["If-Modified-Since"] == LastModified.ToString("R"))
-                {
-                    Context.Response.SetStatus(304, "Not Modified");
-                    Context.Response.Send();
-                    return;
-                }
-            }
-            Context.Response.Headers.Add("Last-Modified", LastModified.ToString("R"));
+                DateTime LastModified = File.GetLastWriteTimeUtc(Path);
 
+                if (Context.Request.Headers.ContainsKey("If-Modified-Since"))
+                {
+                    if (Context.Request.Headers["If-Modified-Since"] == LastModified.ToString("R"))
+                    {
+                        Context.Response.SetStatus(304, "Not Modified");
+                        Context.Response.Send();
+                        return;
+                    }
+                }
+                Context.Response.Headers.Add("Last-Modified", LastModified.ToString("R"));
+            }
             HttpContext.SendResponse(Context, File.ReadAllBytes(Path));
         }
         public static void Redirect(HttpContext Context, string Url)

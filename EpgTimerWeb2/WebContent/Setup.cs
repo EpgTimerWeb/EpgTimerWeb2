@@ -58,7 +58,7 @@ namespace EpgTimer
                         }
                         else
                         {
-                            throw new Exception("Bad Connect or Auth File Not Found");
+                            throw new Exception("Error: Unable to connect server");
                         }
                     }
                     catch (Exception ex)
@@ -82,6 +82,7 @@ namespace EpgTimer
                     PrivateSetting.Instance.SetupMode = false;
                     PrivateSetting.Instance.Server.Stop();
                     PrivateSetting.Instance.Server = new WebServer((int)Setting.Instance.HttpPort);
+                    PrivateSetting.Instance.Server.OnRequest += ServerAction.DoProcess;
                     PrivateSetting.Instance.Server.Start();
                 }
                 else
@@ -102,14 +103,37 @@ namespace EpgTimer
     <body>
         <h1>EpgTimerWeb2 Configure</h1>
         <form action='/update' method='post'>
-            <p>EDCB Server:<input name='ctrlhost' placeholder='127.0.0.1' value='127.0.0.1' /></p>
-            <p>EDCB Port:<input name='ctrlport' placeholder='4510' value='4510' /></p>
-            <p>Callback Port:<input name='cbport' placeholder='4521' value='4521' /></p>
-            <p>Username:<input name='user' placeholder='user'  /></p>
-            <p>Password:<input name='pass' placeholder='pass'  /></p>
-            <p>Http Port:<input name='http' placeholder='8080' value='8080' /></p>
-            <p>Pin Code:<input name='code' /></p>
-            <p><input type='submit' value='Update config' /></p>
+            <table>
+                <tr>
+                    <td>EpgTimer Server</td>
+                    <td><input name='ctrlhost' placeholder='127.0.0.1' value='127.0.0.1' /></td>
+                </tr>
+                <tr>
+                    <td>EpgTimer ServerPort</td>
+                    <td><input name='ctrlport' placeholder='4510' value='4510' /></td>
+                </tr>
+                <tr>
+                    <td>EpgTimer CallbackPort</td>
+                    <td><input name='cbport' placeholder='4521' value='4521' /></td>
+                </tr>
+                <tr>
+                    <td>WUI Username</td>
+                    <td><input name='user' placeholder='user'  /></td>
+                </tr>
+                <tr>
+                    <td>WUI Password</td>
+                    <td><input name='pass' placeholder='pass'  /></td>
+                </tr>
+                <tr>
+                    <td>WUI Port</td>
+                    <td><input name='http' placeholder='8080' value='8080' /></td>
+                </tr>
+                <tr>
+                    <td>Pincode</td>
+                    <td><input name='code' /></td>
+                </tr>
+            </table>
+            <p><input type='submit' value='Update config' /></p>     
         </form>
     </body>
 </html>

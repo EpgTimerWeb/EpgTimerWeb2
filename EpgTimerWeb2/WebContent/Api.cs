@@ -525,7 +525,7 @@ namespace EpgTimer
                         ushort TSID = ushort.Parse(Arg["tsid"]);
                         ulong Key = CommonManager.Create64Key(ONID, TSID, SID);
                         ReserveData Reserve = new ReserveData();
-                        
+
                         Reserve.Title = Arg["title"];
 
                         Reserve.ONID = ONID;
@@ -828,12 +828,21 @@ namespace EpgTimer
                 }
                 else if (Command == "ChangePassword")
                 {
-                    if (ContainsMultipleKeys(Arg, "now", "new"))
+                    if (Setting.Instance.LoginUser == "" && (!Arg.ContainsKey("user") || Arg["user"] == ""))
+                    {
+                        Data = new JsonResult(null, ErrCode.CMD_ERR_INVALID_ARG);
+                    }
+                    else if (ContainsMultipleKeys(Arg, "now", "new"))
                     {
                         if (Setting.Instance.LoginPassword == Arg["now"])
                         {
                             Setting.Instance.LoginPassword = Arg["new"];
+                            if (Setting.Instance.LoginUser == "")
+                            {
+                                Setting.Instance.LoginUser = Arg["user"];
+                            }
                             Data = new JsonResult(null, ErrCode.CMD_SUCCESS);
+                            WebCache.Instance.Clear();
                         }
                         else
                         {
