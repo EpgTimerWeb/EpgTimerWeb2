@@ -28,7 +28,7 @@ namespace EpgTimerWeb2
         {
             Default = Console.ForegroundColor;
 
-            Console.WriteLine("Usage: EpgTimerWeb2.EXE [-cfg=EpgTimerWeb2.xml]");
+            Console.WriteLine("Usage: EpgTimerWeb2.EXE [-cfg=EpgTimerWeb2.xml|-no-gzip]");
             using (var mutex = new Mutex(false, "EpgTimerWeb2"))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -56,6 +56,19 @@ namespace EpgTimerWeb2
                                 case "cfg":
                                     PrivateSetting.Instance.ConfigPath = val;
                                     Console.WriteLine("設定ファイル: {0}", val);
+                                    break;
+                                default:
+                                    Console.WriteLine("コマンドラインがおかしいです");
+                                    Environment.Exit(1);
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            switch (varg)
+                            {
+                                case "no-gzip":
+                                    PrivateSetting.Instance.NoGZIP = true;
                                     break;
                                 default:
                                     Console.WriteLine("コマンドラインがおかしいです");

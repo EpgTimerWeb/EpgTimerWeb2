@@ -48,6 +48,7 @@ namespace EpgTimer
             SetupMode = false;
             ConfigPath = "EpgTimerWeb2.xml";
             SetupCode = "";
+            NoGZIP = false;
         }
         public List<HttpSession> Sessions { set; get; }
         public CtrlCmdConnect CmdConnect { get; set; }
@@ -55,6 +56,7 @@ namespace EpgTimer
         public bool SetupMode { set; get; }
         public string ConfigPath { set; get; }
         public string SetupCode { set; get; }
+        public bool NoGZIP { set; get; }
     }
     public class ContentColorItem : IEquatable<ContentColorItem>
     {

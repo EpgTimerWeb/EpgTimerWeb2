@@ -114,7 +114,7 @@ EpgTimerWeb(v2) by YUKI
         public static bool SendResponse(HttpContext Context)
         {
             Context.Response.OutputStream.Seek(0, SeekOrigin.Begin);
-            if (Context.Response.UseGZip)
+            if (Context.Response.UseGZip && !PrivateSetting.Instance.NoGZIP)
             {
                 Debug.Print("GZip Source {0}", Context.Response.OutputStream.Length);
                 Context.Response.Headers["Content-Encoding"] = "gzip";

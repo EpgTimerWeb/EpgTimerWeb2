@@ -134,9 +134,9 @@ namespace EpgTimer
                     if (NeedsAuth && !IsAuth) throw new HttpResponseException(401, "Unauthorized", "");
                     if (Info.Request.Url.ToLower() == "/resource")
                     {
+                        Info.Response.Headers["Content-Type"] = "text/javascript; charset=utf8";
                         WebCache.CachedResponse(Info, (Info2) =>
                         {
-                            Info2.Response.Headers["Content-Type"] = "text/javascript; charset=utf8";
                             string cb = "if(typeof(ETW)==='undefined')ETW={};\nETW.Resource=" + JsonUtil.Serialize(CommonManagerJson.Instance, false) + ";";
                             cb += "\nETW.Resource.NeedsAuth=" + (NeedsAuth ? "true" : "false") + ";\n";
                             return cb;
@@ -150,9 +150,9 @@ namespace EpgTimer
                     }
                     else if (r1.IsMatch(Info.Request.Url))
                     {
+                        Info.Response.Headers["Content-Type"] = "text/javascript; charset=utf8";
                         ApiCache.CachedResponse(Info, (Info2) =>
                         {
-                            Info2.Response.Headers["Content-Type"] = "text/javascript; charset=utf8";
                             return Api.Call(r1.Match(Info2.Request.Url).Groups[1].Value, Info2.Request.QueryString, false);
                         });
                     }
